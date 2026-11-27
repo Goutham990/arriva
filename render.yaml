@@ -1,0 +1,24 @@
+services:
+  - type: web
+    name: arriva-studio
+    runtime: docker
+    plan: starter
+    numInstances: 1
+    healthCheckPath: /health
+    disk:
+      name: arriva-data
+      mountPath: /var/lib/arriva
+      sizeGB: 1
+    envVars:
+      - key: ARRIVA_PUBLIC
+        value: '1'
+      - key: ARRIVA_DB
+        value: /var/lib/arriva/workspace.sqlite3
+      - key: ARRIVA_REVIEW_USER
+        value: reviewer
+      - key: ARRIVA_REVIEW_PASSWORD
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GEMINI_MODEL
+        value: gemini-3.8-flash

@@ -1,0 +1,10 @@
+127.0.0.1 - - [27/Nov/2026 11:00:02] "GET /api/entry?__arriva_route=dashboard&day=2025-04-20&mode=stretch HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:02] "GET /api/entry?__arriva_route=config HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:03] "POST /api/entry?__arriva_route=chat HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:03] "POST /api/entry?__arriva_route=confirm HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:03] "GET /api/entry?__arriva_route=dashboard&day=2025-04-20&mode=stretch HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:03] "GET /api/entry?__arriva_route=config HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:03] "POST /api/entry?__arriva_route=chat HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:03] "POST /api/entry?__arriva_route=decline HTTP/1.1" 200 -
+{'width': 390, 'scroll': 390, 'offenders': []}
+PASS: isolated Chromium, serverless handler bridge, mock PostgreSQL RPC and Gemini provider, evidence cards, confirm/decline, dark mode, mobile overflow.

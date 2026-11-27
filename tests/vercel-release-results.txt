@@ -1,0 +1,49 @@
+test_api_persistence_and_stale (test_release.Release.test_api_persistence_and_stale) ... 127.0.0.1 - - [27/Nov/2026 10:59:46] "POST /api/save HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:46] "GET /api/export HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:46] "POST /api/save HTTP/1.1" 409 -
+ok
+test_conflicting_gate_quarantine (test_release.Release.test_conflicting_gate_quarantine) ... 127.0.0.1 - - [27/Nov/2026 10:59:47] "POST /api/save HTTP/1.1" 200 -
+ok
+test_content_type_nan (test_release.Release.test_content_type_nan) ... 127.0.0.1 - - [27/Nov/2026 10:59:47] "POST /api/reset HTTP/1.1" 415 -
+127.0.0.1 - - [27/Nov/2026 10:59:47] "POST /api/reset HTTP/1.1" 400 -
+ok
+test_cross_origin_and_missing (test_release.Release.test_cross_origin_and_missing) ... 127.0.0.1 - - [27/Nov/2026 10:59:48] "POST /api/reset HTTP/1.1" 403 -
+127.0.0.1 - - [27/Nov/2026 10:59:48] "POST /api/reset HTTP/1.1" 403 -
+127.0.0.1 - - [27/Nov/2026 10:59:48] "POST /api/reset HTTP/1.1" 403 -
+ok
+test_health_no_auth (test_release.Release.test_health_no_auth) ... 127.0.0.1 - - [27/Nov/2026 10:59:48] "GET /health HTTP/1.1" 200 -
+ok
+test_hosted_config_locked (test_release.Release.test_hosted_config_locked) ... 127.0.0.1 - - [27/Nov/2026 10:59:48] "POST /api/config HTTP/1.1" 403 -
+127.0.0.1 - - [27/Nov/2026 10:59:48] "GET /api/config HTTP/1.1" 200 -
+ok
+test_malformed_patch_rejected (test_release.Release.test_malformed_patch_rejected) ... 127.0.0.1 - - [27/Nov/2026 10:59:49] "POST /api/save HTTP/1.1" 400 -
+ok
+test_mutation_matrix (test_release.Release.test_mutation_matrix) ... 127.0.0.1 - - [27/Nov/2026 10:59:49] "POST /api/mutation HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:49] "POST /api/mutation HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:49] "POST /api/mutation HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:49] "POST /api/mutation HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:49] "POST /api/mutation HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:50] "POST /api/mutation HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:50] "POST /api/reset HTTP/1.1" 200 -
+ok
+test_protect_pages_and_api (test_release.Release.test_protect_pages_and_api) ... 127.0.0.1 - - [27/Nov/2026 10:59:50] "GET / HTTP/1.1" 401 -
+127.0.0.1 - - [27/Nov/2026 10:59:50] "GET /app.js HTTP/1.1" 401 -
+127.0.0.1 - - [27/Nov/2026 10:59:50] "GET /api/dashboard HTTP/1.1" 401 -
+127.0.0.1 - - [27/Nov/2026 10:59:50] "GET /api/export HTTP/1.1" 401 -
+127.0.0.1 - - [27/Nov/2026 10:59:50] "GET /api/schema HTTP/1.1" 401 -
+127.0.0.1 - - [27/Nov/2026 10:59:50] "GET /api/config HTTP/1.1" 401 -
+127.0.0.1 - - [27/Nov/2026 10:59:50] "POST /api/reset HTTP/1.1" 401 -
+ok
+test_provider_busy (test_release.Release.test_provider_busy) ... 127.0.0.1 - - [27/Nov/2026 10:59:51] "POST /api/test HTTP/1.1" 429 -
+ok
+test_public_fail_closed (test_release.Release.test_public_fail_closed) ... ok
+test_static_allowlist_and_headers (test_release.Release.test_static_allowlist_and_headers) ... 127.0.0.1 - - [27/Nov/2026 10:59:52] "GET / HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:52] "GET /../data/source.json HTTP/1.1" 404 -
+ok
+test_throttle (test_release.Release.test_throttle) ... 127.0.0.1 - - [27/Nov/2026 10:59:52] "POST /api/test HTTP/1.1" 429 -
+ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 6.484s
+
+OK

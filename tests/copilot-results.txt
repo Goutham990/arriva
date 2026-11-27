@@ -1,0 +1,35 @@
+test_budget_guardrail (__main__.CopilotTests.test_budget_guardrail) ... ok
+test_campaign_edit_what_if (__main__.CopilotTests.test_campaign_edit_what_if) ... ok
+test_citation_and_signature (__main__.CopilotTests.test_citation_and_signature) ... ok
+test_constraints_no_write (__main__.CopilotTests.test_constraints_no_write) ... ok
+test_diagnosis (__main__.CopilotTests.test_diagnosis) ... ok
+test_engagement (__main__.CopilotTests.test_engagement) ... ok
+test_fresh_followup_after_mutation (__main__.CopilotTests.test_fresh_followup_after_mutation) ... ok
+test_http_confirmation_workflow (__main__.CopilotTests.test_http_confirmation_workflow) ... 127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/confirm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/confirm HTTP/1.1" 400 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/decline HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/confirm HTTP/1.1" 400 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/confirm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/save HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/confirm HTTP/1.1" 409 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/confirm HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [26/Nov/2026 13:11:38] "POST /api/confirm HTTP/1.1" 400 -
+ok
+test_invalid_dates_and_rates (__main__.CopilotTests.test_invalid_dates_and_rates) ... ok
+test_proposal_token_not_sent_to_model (__main__.CopilotTests.test_proposal_token_not_sent_to_model) ... ok
+test_reject_fake_citation (__main__.CopilotTests.test_reject_fake_citation) ... ok
+test_task_update_draft (__main__.CopilotTests.test_task_update_draft) ... ok
+test_trend (__main__.CopilotTests.test_trend) ... ok
+test_uncited_draft_revoked (__main__.CopilotTests.test_uncited_draft_revoked) ... ok
+test_unknown_data (__main__.CopilotTests.test_unknown_data) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.931s
+
+OK

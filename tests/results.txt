@@ -1,0 +1,16 @@
+test_baseline (__main__.Tests.test_baseline) ... ok
+test_budget_capacity (__main__.Tests.test_budget_capacity) ... ok
+test_credit (__main__.Tests.test_credit) ... ok
+test_duplicates (__main__.Tests.test_duplicates) ... ok
+test_experiment (__main__.Tests.test_experiment) ... ok
+test_plan (__main__.Tests.test_plan) ... ok
+test_reallocation (__main__.Tests.test_reallocation) ... ok
+test_scan (__main__.Tests.test_scan) ... ok
+test_snapshots (__main__.Tests.test_snapshots) ... ok
+test_validation (__main__.Tests.test_validation) ... ok
+test_walkin (__main__.Tests.test_walkin) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.206s
+
+OK

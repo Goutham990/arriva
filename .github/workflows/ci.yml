@@ -1,0 +1,44 @@
+name: ARRIVA checks
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s tests -p 'test_engine.py' -v
+      - run: python -m unittest discover -s tests -p 'test_copilot.py' -v
+      - run: python -m unittest discover -s tests -p 'test_release.py' -v
+      - run: python -m unittest discover -s tests -p 'test_vercel.py' -v
+      - run: node --check web/app.js
+  postgres-contract:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: test-only-password
+          POSTGRES_DB: arriva_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      PGPASSWORD: test-only-password
+      PGHOST: localhost
+      PGUSER: postgres
+      PGDATABASE: arriva_test
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get update && sudo apt-get install -y postgresql-client
+      - run: psql -v ON_ERROR_STOP=1 -f tests/postgres_roles.sql
+      - run: psql -v ON_ERROR_STOP=1 -f supabase/setup.sql
+      - run: psql -v ON_ERROR_STOP=1 -f supabase/setup.sql
+      - run: psql -v ON_ERROR_STOP=1 -f tests/postgres_contract.sql

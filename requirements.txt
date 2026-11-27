@@ -1,0 +1,1 @@
+# Python standard library only. Vercel discovers api/entry.py as a Python function.

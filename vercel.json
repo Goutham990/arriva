@@ -1,0 +1,84 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": null,
+  "installCommand": null,
+  "outputDirectory": "public",
+  "functions": {
+    "api/entry.py": {
+      "maxDuration": 300,
+      "includeFiles": "{server.py,engine.py,cloud_store.py,data/source.json,web/**}",
+      "excludeFiles": "{tests/**,docs/**,data/*.xlsx,data/*.sqlite3*,supabase/**,*.zip}"
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/api/entry?__arriva_route=home"
+    },
+    {
+      "source": "/index.html",
+      "destination": "/api/entry?__arriva_route=index"
+    },
+    {
+      "source": "/style.css",
+      "destination": "/api/entry?__arriva_route=style"
+    },
+    {
+      "source": "/app.js",
+      "destination": "/api/entry?__arriva_route=script"
+    },
+    {
+      "source": "/health",
+      "destination": "/api/entry?__arriva_route=health"
+    },
+    {
+      "source": "/api/dashboard",
+      "destination": "/api/entry?__arriva_route=dashboard"
+    },
+    {
+      "source": "/api/config",
+      "destination": "/api/entry?__arriva_route=config"
+    },
+    {
+      "source": "/api/export",
+      "destination": "/api/entry?__arriva_route=export"
+    },
+    {
+      "source": "/api/schema",
+      "destination": "/api/entry?__arriva_route=schema"
+    },
+    {
+      "source": "/api/save",
+      "destination": "/api/entry?__arriva_route=save"
+    },
+    {
+      "source": "/api/reset",
+      "destination": "/api/entry?__arriva_route=reset"
+    },
+    {
+      "source": "/api/mutation",
+      "destination": "/api/entry?__arriva_route=mutation"
+    },
+    {
+      "source": "/api/test",
+      "destination": "/api/entry?__arriva_route=test"
+    },
+    {
+      "source": "/api/chat",
+      "destination": "/api/entry?__arriva_route=chat"
+    },
+    {
+      "source": "/api/tool",
+      "destination": "/api/entry?__arriva_route=tool"
+    },
+    {
+      "source": "/api/decline",
+      "destination": "/api/entry?__arriva_route=decline"
+    },
+    {
+      "source": "/api/confirm",
+      "destination": "/api/entry?__arriva_route=confirm"
+    }
+  ]
+}

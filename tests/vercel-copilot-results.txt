@@ -1,0 +1,35 @@
+test_budget_guardrail (test_copilot.CopilotTests.test_budget_guardrail) ... ok
+test_campaign_edit_what_if (test_copilot.CopilotTests.test_campaign_edit_what_if) ... ok
+test_citation_and_signature (test_copilot.CopilotTests.test_citation_and_signature) ... ok
+test_constraints_no_write (test_copilot.CopilotTests.test_constraints_no_write) ... ok
+test_diagnosis (test_copilot.CopilotTests.test_diagnosis) ... ok
+test_engagement (test_copilot.CopilotTests.test_engagement) ... ok
+test_fresh_followup_after_mutation (test_copilot.CopilotTests.test_fresh_followup_after_mutation) ... ok
+test_http_confirmation_workflow (test_copilot.CopilotTests.test_http_confirmation_workflow) ... 127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/confirm HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/confirm HTTP/1.1" 400 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/decline HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/confirm HTTP/1.1" 400 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/confirm HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/save HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/confirm HTTP/1.1" 409 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/confirm HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/tool HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:44] "POST /api/confirm HTTP/1.1" 400 -
+ok
+test_invalid_dates_and_rates (test_copilot.CopilotTests.test_invalid_dates_and_rates) ... ok
+test_proposal_token_not_sent_to_model (test_copilot.CopilotTests.test_proposal_token_not_sent_to_model) ... ok
+test_reject_fake_citation (test_copilot.CopilotTests.test_reject_fake_citation) ... ok
+test_task_update_draft (test_copilot.CopilotTests.test_task_update_draft) ... ok
+test_trend (test_copilot.CopilotTests.test_trend) ... ok
+test_uncited_draft_revoked (test_copilot.CopilotTests.test_uncited_draft_revoked) ... ok
+test_unknown_data (test_copilot.CopilotTests.test_unknown_data) ... ok
+
+----------------------------------------------------------------------
+Ran 15 tests in 0.978s
+
+OK

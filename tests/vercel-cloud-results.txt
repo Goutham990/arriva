@@ -1,0 +1,61 @@
+test_bad_config_and_sanitized_errors (test_vercel.TransportTests.test_bad_config_and_sanitized_errors) ... ok
+test_secret_and_legacy_header_handling (test_vercel.TransportTests.test_secret_and_legacy_header_handling) ... ok
+test_auth_and_origin (test_vercel.VercelTests.test_auth_and_origin) ... 127.0.0.1 - - [27/Nov/2026 10:59:54] "GET /api/entry?__arriva_route=home HTTP/1.1" 401 -
+127.0.0.1 - - [27/Nov/2026 10:59:54] "GET /api/entry?__arriva_route=dashboard HTTP/1.1" 401 -
+127.0.0.1 - - [27/Nov/2026 10:59:54] "POST /api/entry?__arriva_route=reset HTTP/1.1" 403 -
+127.0.0.1 - - [27/Nov/2026 10:59:54] "POST /api/entry?__arriva_route=reset HTTP/1.1" 403 -
+ok
+test_credit_and_reset (test_vercel.VercelTests.test_credit_and_reset) ... 127.0.0.1 - - [27/Nov/2026 10:59:54] "POST /api/entry?__arriva_route=mutation HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:55] "GET /api/entry?__arriva_route=dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:55] "POST /api/entry?__arriva_route=reset HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:55] "GET /api/entry?__arriva_route=dashboard HTTP/1.1" 200 -
+ok
+test_dashboard_and_snapshot (test_vercel.VercelTests.test_dashboard_and_snapshot) ... 127.0.0.1 - - [27/Nov/2026 10:59:55] "GET /api/entry?__arriva_route=dashboard HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:55] "GET /api/entry?__arriva_route=dashboard&day=2025-04-11&mode=base HTTP/1.1" 200 -
+ok
+test_db_failure_closed (test_vercel.VercelTests.test_db_failure_closed) ... 127.0.0.1 - - [27/Nov/2026 10:59:56] "GET /api/entry?__arriva_route=health HTTP/1.1" 503 -
+127.0.0.1 - - [27/Nov/2026 10:59:56] "GET /api/entry?__arriva_route=dashboard HTTP/1.1" 503 -
+127.0.0.1 - - [27/Nov/2026 10:59:56] "GET /api/entry?__arriva_route=home HTTP/1.1" 503 -
+ok
+test_mock_gemini_tool_call (test_vercel.VercelTests.test_mock_gemini_tool_call) ... 127.0.0.1 - - [27/Nov/2026 10:59:56] "POST /api/entry?__arriva_route=chat HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:56] "POST /api/entry?__arriva_route=confirm HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:56] "GET /api/entry?__arriva_route=export HTTP/1.1" 200 -
+ok
+test_persistent_proposal_confirm_replay (test_vercel.VercelTests.test_persistent_proposal_confirm_replay) ... 127.0.0.1 - - [27/Nov/2026 10:59:57] "POST /api/entry?__arriva_route=tool HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:57] "GET /api/entry?__arriva_route=export HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:57] "POST /api/entry?__arriva_route=confirm HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:57] "GET /api/entry?__arriva_route=export HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:57] "POST /api/entry?__arriva_route=confirm HTTP/1.1" 400 -
+127.0.0.1 - - [27/Nov/2026 10:59:57] "GET /api/entry?__arriva_route=export HTTP/1.1" 200 -
+ok
+test_rate_lease_across_invocations (test_vercel.VercelTests.test_rate_lease_across_invocations) ... 127.0.0.1 - - [27/Nov/2026 10:59:57] "POST /api/entry?__arriva_route=test HTTP/1.1" 429 -
+ok
+test_routes_and_query (test_vercel.VercelTests.test_routes_and_query) ... 127.0.0.1 - - [27/Nov/2026 10:59:58] "GET /api/entry?__arriva_route=home HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:58] "GET /api/entry?__arriva_route=script HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:58] "GET /api/entry?__arriva_route=style HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:58] "GET /api/entry?__arriva_route=health HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:58] "GET /data/source.json HTTP/1.1" 404 -
+ok
+test_save_stale_and_new_invocation (test_vercel.VercelTests.test_save_stale_and_new_invocation) ... 127.0.0.1 - - [27/Nov/2026 10:59:58] "GET /api/entry?__arriva_route=export HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:58] "POST /api/entry?__arriva_route=save HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:58] "GET /api/entry?__arriva_route=export HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:58] "POST /api/entry?__arriva_route=save HTTP/1.1" 409 -
+ok
+test_secret_and_hosted_settings (test_vercel.VercelTests.test_secret_and_hosted_settings) ... 127.0.0.1 - - [27/Nov/2026 10:59:59] "GET /api/entry?__arriva_route=config HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:59] "GET /api/entry?__arriva_route=config HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 10:59:59] "POST /api/entry?__arriva_route=config HTTP/1.1" 403 -
+ok
+test_stale_declined_expired (test_vercel.VercelTests.test_stale_declined_expired) ... 127.0.0.1 - - [27/Nov/2026 11:00:00] "POST /api/entry?__arriva_route=tool HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:00] "POST /api/entry?__arriva_route=decline HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:00] "POST /api/entry?__arriva_route=confirm HTTP/1.1" 400 -
+127.0.0.1 - - [27/Nov/2026 11:00:00] "POST /api/entry?__arriva_route=tool HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:00] "POST /api/entry?__arriva_route=confirm HTTP/1.1" 400 -
+127.0.0.1 - - [27/Nov/2026 11:00:00] "POST /api/entry?__arriva_route=tool HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:00] "POST /api/entry?__arriva_route=reset HTTP/1.1" 200 -
+127.0.0.1 - - [27/Nov/2026 11:00:00] "POST /api/entry?__arriva_route=confirm HTTP/1.1" 409 -
+ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 5.602s
+
+OK
