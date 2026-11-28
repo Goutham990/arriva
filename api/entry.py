@@ -36,7 +36,7 @@ class handler(server.Handler):
         try:
             server.check_public_config();server.cloud.config()
         except (SystemExit,CloudUnavailable):
-            self.reply({'error':'Hosted configuration incomplete. Check ARRIVA_ORIGIN, reviewer credentials and Supabase environment.'},503);return
+            self.reply({'error':'Hosted configuration incomplete. Check ARRIVA_ORIGIN and Supabase environment.'},503);return
         route=normalize_path(self.path,method)
         if route is None:self.reply({'error':'Not found'},404);return
         self.path=route

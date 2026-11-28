@@ -1,7 +1,7 @@
 """Serverless adapter tests with an explicitly mocked Supabase RPC contract.
 No cloud credentials needed. Actual SQL is tested separately by CI on PostgreSQL.
 """
-import base64, copy, hashlib, json, os, pathlib, threading, time, unittest, urllib.request, urllib.error
+import copy, hashlib, json, os, pathlib, threading, time, unittest, urllib.request, urllib.error
 from unittest.mock import patch
 import sys
 sys.path.insert(0,str(pathlib.Path(__file__).resolve().parents[1]))
@@ -44,12 +44,11 @@ class FakeRPC:
 class VercelTests(unittest.TestCase):
     def setUp(self):
         self.fake=FakeRPC();self.env=patch.dict(os.environ,{'SUPABASE_URL':'https://mock-ref.supabase.co','SUPABASE_SECRET_KEY':'sb_secret_mock'});self.env.start()
-        self.settings=patch.multiple(app,CLOUD=True,PUBLIC=True,PUBLIC_ORIGIN='https://demo.vercel.app',REVIEW_USER='reviewer',REVIEW_PASSWORD='mock-long-password-123',SECRET='mock-gemini');self.settings.start();self.rpc=patch.object(cloud,'rpc',side_effect=self.fake);self.rpc.start()
-        self.srv=app.ThreadingHTTPServer(('127.0.0.1',0),handler);threading.Thread(target=self.srv.serve_forever,daemon=True).start();self.base='http://127.0.0.1:'+str(self.srv.server_port);self.auth='Basic '+base64.b64encode(b'reviewer:mock-long-password-123').decode()
+        self.settings=patch.multiple(app,CLOUD=True,PUBLIC=True,PUBLIC_ORIGIN='https://demo.vercel.app',SECRET='mock-gemini');self.settings.start();self.rpc=patch.object(cloud,'rpc',side_effect=self.fake);self.rpc.start()
+        self.srv=app.ThreadingHTTPServer(('127.0.0.1',0),handler);threading.Thread(target=self.srv.serve_forever,daemon=True).start();self.base='http://127.0.0.1:'+str(self.srv.server_port)
     def tearDown(self):self.srv.shutdown();self.srv.server_close();self.rpc.stop();self.settings.stop();self.env.stop()
-    def req(self,path,body=None,code=200,auth=True,origin='https://demo.vercel.app'):
+    def req(self,path,body=None,code=200,origin='https://demo.vercel.app'):
         headers={};
-        if auth:headers['Authorization']=self.auth
         if origin:headers['Origin']=origin
         if body is not None:headers['Content-Type']='application/json'
         request=urllib.request.Request(self.base+path,data=None if body is None else json.dumps(body).encode(),headers=headers,method='GET' if body is None else 'POST')
@@ -62,12 +61,12 @@ class VercelTests(unittest.TestCase):
     def test_routes_and_query(self):
         self.assertEqual(normalize_path('/api/entry?__arriva_route=dashboard&day=2025-04-11&mode=base','GET'),'/api/dashboard?day=2025-04-11&mode=base');self.assertIsNone(normalize_path('/api/entry?__arriva_route=save&__arriva_route=home','POST'));self.assertIsNone(normalize_path('/api/entry?__arriva_route=../../data/source.json','GET'))
         cfg=json.loads((pathlib.Path(__file__).resolve().parents[1]/'vercel.json').read_text());self.assertEqual({x['source'] for x in cfg['rewrites']},set(ROUTES.values()))
-        self.assertIn(b'ARRIVA',self.route('home'));self.assertIn(b"'use strict'",self.route('script'));self.assertTrue(self.route('style'));self.assertEqual(self.route('health',auth=False),{'status':'ok'});self.req('/data/source.json',code=404)
+        self.assertIn(b'ARRIVA',self.route('home'));self.assertIn(b"'use strict'",self.route('script'));self.assertTrue(self.route('style'));self.assertEqual(self.route('health'),{'status':'ok'});self.req('/data/source.json',code=404)
     def test_dashboard_and_snapshot(self):
         d=self.route('dashboard');self.assertEqual(d['historical']['visitors'],2050);self.assertEqual(d['historical']['spend'],274000);self.assertEqual(d['base']['visitors'],50280);self.assertEqual(d['stretch']['visitors'],67300)
         d=self.req('/api/entry?__arriva_route=dashboard&day=2025-04-11&mode=base');self.assertEqual(d['historical']['visitors'],0);self.assertIsNone(d['historical']['cac'])
-    def test_auth_and_origin(self):
-        self.route('home',code=401,auth=False);self.route('dashboard',code=401,auth=False);self.route('reset',{'expectedRevision':0},403,origin='https://evil.example');self.route('reset',{'expectedRevision':0},403,origin=None);self.assertIsNone(self.fake.state)
+    def test_public_access_and_origin(self):
+        self.assertIn(b'ARRIVA',self.route('home'));self.assertEqual(self.route('dashboard')['historical']['visitors'],2050);self.route('reset',{'expectedRevision':0},403,origin='https://evil.example');self.route('reset',{'expectedRevision':0},403,origin=None);self.assertIsNone(self.fake.state)
     def test_secret_and_hosted_settings(self):
         self.assertEqual(self.route('config')['storage'],'Supabase PostgreSQL');self.assertNotIn('mock-gemini',json.dumps(self.route('config')));self.route('config',{'key':'no'},403);self.assertEqual(app.SECRET,'mock-gemini')
     def test_save_stale_and_new_invocation(self):
@@ -81,7 +80,7 @@ class VercelTests(unittest.TestCase):
     def test_rate_lease_across_invocations(self):
         self.fake.rates['ai']=12;self.route('test',{},429);self.fake.rates['ai']=0;one=app.acquire_ai();two=app.acquire_ai();self.assertIsNone(app.acquire_ai());app.release_ai(one);three=app.acquire_ai();self.assertTrue(three);app.release_ai(two);app.release_ai(three);self.assertFalse(self.fake.leases)
     def test_db_failure_closed(self):
-        with patch.object(cloud,'rpc',side_effect=cloud.CloudUnavailable('Supabase unavailable')):self.route('health',code=503,auth=False);self.route('dashboard',code=503)
+        with patch.object(cloud,'rpc',side_effect=cloud.CloudUnavailable('Supabase unavailable')):self.route('health',code=503);self.route('dashboard',code=503)
         with patch.dict(os.environ,{'SUPABASE_SECRET_KEY':'','SUPABASE_SERVICE_ROLE_KEY':''}):self.route('home',code=503)
     def test_mock_gemini_tool_call(self):
         responses=[{'candidates':[{'content':{'role':'model','parts':[{'functionCall':{'name':'propose_task','args':{'name':'QA cloud task','owner':'QA'},'id':'f1'},'thoughtSignature':'mock'}]}}]}, {'candidates':[{'finishReason':'STOP','content':{'role':'model','parts':[{'text':'Task proposed [E3].'}]}}]}]

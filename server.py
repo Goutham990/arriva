@@ -1,6 +1,6 @@
 from http.server import SimpleHTTPRequestHandler,ThreadingHTTPServer
 from pathlib import Path
-import base64, binascii, hmac, collections, logging, contextvars
+import collections, logging, contextvars
 import argparse, sqlite3, threading, json, os, urllib.request, urllib.error, re, copy, datetime, time, getpass, secrets
 from contextlib import contextmanager
 from engine import *
@@ -10,11 +10,10 @@ ROOT=Path(__file__).parent;lock=threading.RLock();SECRET=os.getenv('GEMINI_API_K
 DB=Path(os.getenv('ARRIVA_DB',str(ROOT/'data/workspace.sqlite3')))
 PUBLIC=CLOUD or os.getenv('ARRIVA_PUBLIC','0')=='1'
 PUBLIC_ORIGIN=(os.getenv('ARRIVA_ORIGIN') or os.getenv('RENDER_EXTERNAL_URL') or ('https://'+os.environ['VERCEL_PROJECT_PRODUCTION_URL'] if os.getenv('VERCEL_PROJECT_PRODUCTION_URL') else '')).rstrip('/')
-REVIEW_USER=os.getenv('ARRIVA_REVIEW_USER','reviewer');REVIEW_PASSWORD=os.getenv('ARRIVA_REVIEW_PASSWORD','')
 RATE=collections.defaultdict(collections.deque);AI_SLOT=threading.BoundedSemaphore(2)
 AI_DEADLINE=contextvars.ContextVar("ai_deadline",default=None)
 def check_public_config():
- if PUBLIC and (not PUBLIC_ORIGIN.startswith('https://') or '/' in PUBLIC_ORIGIN[8:] or len(REVIEW_PASSWORD)<16 or not REVIEW_USER or ':' in REVIEW_USER):raise SystemExit('Public mode requires an exact HTTPS origin and a reviewer password of at least 16 characters.')
+ if PUBLIC and (not PUBLIC_ORIGIN.startswith('https://') or '/' in PUBLIC_ORIGIN[8:]):raise SystemExit('Public mode requires an exact HTTPS origin.')
 def throttle(bucket,limit,window=60):
  if CLOUD:return cloud.rpc('rate',bucket=bucket)['ok']
  with lock:
@@ -241,18 +240,7 @@ class Handler(SimpleHTTPRequestHandler):
   data=json.dumps(obj,allow_nan=False).encode();self.send_response(status);self.send_header('Content-Type','application/json');self.send_header('Cache-Control','no-store');self.send_header('Content-Length',str(len(data)));self.end_headers();self.wfile.write(data)
  def setup(self):
   super().setup();self.connection.settimeout(45)
- def authorized(self):
-  if not PUBLIC:return True
-  try:
-   raw=self.headers.get('Authorization','');scheme,encoded=raw.split(' ',1)
-   if scheme.lower()!='basic':raise ValueError()
-   user,pwd=base64.b64decode(encoded,validate=True).decode('utf-8').split(':',1)
-   if hmac.compare_digest(user.encode(),REVIEW_USER.encode()) and hmac.compare_digest(pwd.encode(),REVIEW_PASSWORD.encode()):return True
-  except (ValueError,UnicodeError,binascii.Error):pass
-  if not throttle('auth-failed',60):self.reply({'error':'Authentication rate limit'},429);return False
-  self.send_response(401);self.send_header('WWW-Authenticate','Basic realm="ARRIVA reviewer", charset="UTF-8"');self.send_header('Content-Length','0');self.end_headers();return False
  def do_HEAD(self):
-  if not self.authorized():return
   self.send_error(405)
  def do_GET(self):
   from urllib.parse import urlsplit,parse_qs
@@ -261,7 +249,6 @@ class Handler(SimpleHTTPRequestHandler):
    try:load();self.reply({'status':'ok'})
    except Exception:self.reply({'status':'unavailable'},503)
    return
-  if not self.authorized():return
   if PUBLIC and not throttle('read',180):self.reply({'error':'Request limit reached'},429);return
   if u.path=='/api/dashboard':
    try:
@@ -278,7 +265,6 @@ class Handler(SimpleHTTPRequestHandler):
   else:self.reply({'error':'Not found'},404)
  def do_POST(self):
   global SECRET,MODEL
-  if not self.authorized():return
   if PUBLIC and not throttle('write',60):self.reply({'error':'Request limit reached'},429);return
   try:
    origin=self.headers.get('Origin');allowed=PUBLIC_ORIGIN if PUBLIC else f'http://{self.headers.get("Host")}'
@@ -359,7 +345,7 @@ class Handler(SimpleHTTPRequestHandler):
   super().end_headers()
 if __name__=='__main__':
  p=argparse.ArgumentParser();p.add_argument('--port',type=int,default=int(os.getenv('PORT','8080')));p.add_argument('--host',default='0.0.0.0' if PUBLIC else '127.0.0.1');p.add_argument('--db',default=str(DB));p.add_argument('--prompt-key',action='store_true');a=p.parse_args();check_public_config();
- if not PUBLIC and a.host not in ('127.0.0.1','localhost'):raise SystemExit('Set ARRIVA_PUBLIC=1 and configure HTTPS/reviewer authentication before binding externally.')
+ if not PUBLIC and a.host not in ('127.0.0.1','localhost'):raise SystemExit('Set ARRIVA_PUBLIC=1 and configure ARRIVA_ORIGIN before binding externally.')
  DB=Path(a.db);
  if not CLOUD:DB.parent.mkdir(parents=True,exist_ok=True)
  setup()

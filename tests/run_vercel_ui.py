@@ -9,8 +9,8 @@ ROOT=pathlib.Path(__file__).resolve().parents[1];sys.path.insert(0,str(ROOT));im
 from engine import scenario
 from test_vercel import FakeRPC
 from api.entry import handler
-import os,base64
-app.CLOUD=True;app.PUBLIC=True;app.PUBLIC_ORIGIN="https://demo.vercel.app";app.REVIEW_USER="reviewer";app.REVIEW_PASSWORD="mock-long-password-123"
+import os
+app.CLOUD=True;app.PUBLIC=True;app.PUBLIC_ORIGIN="https://demo.vercel.app"
 os.environ["SUPABASE_URL"]="https://mock-ref.supabase.co";os.environ["SUPABASE_SECRET_KEY"]="sb_secret_mock"
 fake=FakeRPC();app.cloud.rpc=fake
 
@@ -23,7 +23,7 @@ def model(payload):
 with tempfile.TemporaryDirectory() as tmp:
  old=app.DB;app.DB=pathlib.Path(tmp)/'ui.sqlite3';app.setup();app.SECRET='test-mock-only';srv=app.ThreadingHTTPServer(('127.0.0.1',0),handler);threading.Thread(target=srv.serve_forever,daemon=True).start();base=f'http://127.0.0.1:{srv.server_port}'
  def bridge(path,method,body):
-  route=path.split('?',1);suffix=('&'+route[1]) if len(route)>1 else '';req=urllib.request.Request(base+'/api/entry?__arriva_route='+route[0].removeprefix('/api/')+suffix,data=body.encode() if body else None,headers={'Content-Type':'application/json','Authorization':'Basic '+base64.b64encode(b'reviewer:mock-long-password-123').decode(),'Origin':'https://demo.vercel.app'},method=method)
+  route=path.split('?',1);suffix=('&'+route[1]) if len(route)>1 else '';req=urllib.request.Request(base+'/api/entry?__arriva_route='+route[0].removeprefix('/api/')+suffix,data=body.encode() if body else None,headers={'Content-Type':'application/json','Origin':'https://demo.vercel.app'},method=method)
   try:
    with urllib.request.urlopen(req,timeout=10) as r:return dict(status=r.status,body=r.read().decode())
   except urllib.error.HTTPError as e:return dict(status=e.code,body=e.read().decode())
